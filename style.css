@@ -1,0 +1,133 @@
+/*Body*/
+
+
+body{
+    width: auto;
+    background-color: rgb(253, 253, 252);
+    border-width: 0px;
+    border-style: none;
+}
+
+
+/*Banner*/
+
+header{
+    width: auto;
+    height: 100px;
+    background-color: rgb(167, 9, 182);
+    border-width: 0px;
+    border-style: none;
+    margin: auto;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    /*border-radius: 10px;*/
+    }
+
+    .logo-area{
+        height: 80px;
+        width:300px;
+        position: relative;
+        top: 10px;
+        margin: auto;
+        text-align: center;
+    }
+
+    .logo{
+        height: 100px;
+        position: relative;
+        
+        
+    }
+
+/*Menu*/
+
+nav{
+    width: auto;
+    height: 70px;
+    background-color: rgb(208, 99, 230);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    /*border-radius: 10px;*/ 
+    text-align: center;
+    margin: auto;
+    
+}
+
+    li{
+        list-style: none;
+       
+    }
+
+    #menudiv{
+        margin: auto;
+        width: 600px;
+    }
+
+    ul{
+        list-style: none;
+        width: 90px;
+        height: 20px;
+        float: left;
+        margin-left: 60px;
+        padding: 5px;
+        border-width: 5px; 
+        border-style:none;
+        position: relative;
+        bottom: 9px;
+        font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        font-weight:900;
+        font-size: 22px;
+    }
+
+    .menuyazı{
+        color: aliceblue;
+        text-decoration: none;
+    }
+
+    .menuyazı:hover{
+        color: rgb(220, 20, 210);
+        text-decoration: wavy;    
+    }
+   
+
+/*İçerik*/
+
+article{
+    width: auto;
+    min-height: 748px;
+}
+
+/*Alt Menü*/
+
+footer{
+    width: auto;
+    height: 100px;
+    background-color: rgb(167, 9, 182);
+    border-radius: 10px;
+
+}
+
+.soslog{
+    margin: auto;
+    width: 600px;
+    height: 60px;
+    position: relative;
+    top: 25px;
+}
+
+#instagramimg{
+    height: 50px;
+    margin-left: 50px;
+}
+
+#twitterimg{
+    height: 50px;
+    margin-left: 50px;
+}
+
+#linkedinimg{
+    height: 50px;
+    margin-left: 50px;
+}
+
+
