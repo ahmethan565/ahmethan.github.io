@@ -1,2 +1,2 @@
 # ahmethan.github.io
-kişiswl site
+kişisel site
