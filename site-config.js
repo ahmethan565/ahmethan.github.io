@@ -58,80 +58,8 @@
   function save(cfg) { try { localStorage.setItem(KEY, JSON.stringify(cfg)); return true; } catch(_) { return false; } }
   function reset() { localStorage.removeItem(KEY); return clone(defaults); }
 
-  /* ── Render helpers (used by about.html) ── */
-  const ICONS = { unity:'fa-brands fa-unity', unreal:'fa-solid fa-gamepad', 'c#':'fa-solid fa-hashtag', 'c++':'fa-solid fa-c', html:'fa-brands fa-html5', python:'fa-brands fa-python', photon:'fa-solid fa-network-wired', photoshop:'fa-brands fa-adobe' };
-  function skillIcon(n) { const k=n.toLowerCase(); for(const[m,i] of Object.entries(ICONS)) if(k.includes(m)) return i; return 'fa-solid fa-code'; }
+  window.SiteConfig = { defaults, load, save, reset, uid, clone };
 
-  function timelineHTML(item) {
-    const bul = (item.bullets||[]).map(b=>`<li>${esc(b)}</li>`).join('');
-    return `<div class="experience-item"><div class="exp-header"><span class="exp-role">${esc(item.role)}</span><span class="exp-date">${esc(item.dateFrom)}${item.dateTo?' — '+esc(item.dateTo):''}</span></div><span class="exp-company">${esc(item.company)}</span>${bul?`<ul class="exp-list">${bul}</ul>`:''}</div>`;
-  }
-
-  /* ── Apply ── */
-  function apply(cfg) {
-    if (!cfg) cfg = load();
-    const page = location.pathname.split('/').pop().replace(/^$/,'index.html');
-
-    /* All pages: footer/header social links */
-    ['itchio','github','linkedin','instagram'].forEach(k => {
-      if (cfg.links?.[k]) document.querySelectorAll(`a[id*="${k}"]`).forEach(el => el.setAttribute('href', cfg.links[k]));
-    });
-
-    /* index.html */
-    if (page === 'index.html' || page === '') {
-      const set = (sel,val) => { const e=document.querySelector(sel); if(e&&val!=null) e.textContent=val; };
-      set('.hero-tag', cfg.hero?.tag);
-      set('.hero-title .highlight', cfg.hero?.lastName);
-      set('.hero-subtitle', cfg.hero?.subtitle);
-      set('.hero-desc', cfg.hero?.description);
-      const t = document.querySelector('.hero-title');
-      if (t && cfg.hero?.firstName) for (const n of t.childNodes) if (n.nodeType===3) { n.textContent=cfg.hero.firstName+'\n'; break; }
-      if (cfg.hero?.heroImg) { const i=document.getElementById('hero-img'); if(i) i.src=cfg.hero.heroImg; }
-      const badge = document.querySelector('.hero-badge');
-      if (badge && cfg.hero?.badgeText) for (let i=badge.childNodes.length-1;i>=0;i--) if(badge.childNodes[i].nodeType===3){badge.childNodes[i].textContent='\n            '+cfg.hero.badgeText+'\n          ';break;}
-      const sc = document.getElementById('stats-container');
-      if (sc && cfg.hero?.stats) sc.innerHTML = cfg.hero.stats.map(s=>`<div class="stat-item"><div class="stat-num">${esc(s.num)}</div><div class="stat-label">${esc(s.label)}</div></div>`).join('');
-      const lk = (id,k) => { const e=document.getElementById(id); if(e&&cfg.links?.[k]) e.setAttribute('href',cfg.links[k]); };
-      lk('link-itchio','itchio'); lk('link-github','github'); lk('link-linkedin','linkedin');
-    }
-
-    /* about.html */
-    if (page === 'about.html') {
-      const set=(id,v)=>{const e=document.getElementById(id);if(e&&v!=null)e.textContent=v;};
-      set('about-bio1', cfg.about?.bio1);
-      set('about-bio2', cfg.about?.bio2);
-      if (cfg.about?.aboutImg) { const i=document.getElementById('about-img'); if(i) i.src=cfg.about.aboutImg; }
-      const el=(id,arr)=>{const e=document.getElementById(id);if(e)e.innerHTML=(arr||[]).map(timelineHTML).join('');};
-      el('education-list', cfg.about?.education);
-      el('experience-list', cfg.about?.experience);
-      const sg=document.getElementById('skills-grid');
-      if(sg) sg.innerHTML=(cfg.about?.skills||[]).map(s=>`<div class="skill-chip"><i class="${skillIcon(s)}"></i> ${esc(s)}</div>`).join('');
-      const lg=document.getElementById('languages-grid');
-      if(lg) lg.innerHTML=(cfg.about?.languages||[]).map(l=>`<div class="skill-chip"><i class="fa-solid fa-globe"></i> ${esc(l)}</div>`).join('');
-    }
-
-    /* contact.html */
-    if (page === 'contact.html') {
-      const em=document.querySelector('#direct-email');
-      if(em&&cfg.contact?.email){em.setAttribute('href','mailto:'+cfg.contact.email);const v=em.querySelector('.contact-direct-value');if(v)v.textContent=cfg.contact.email;}
-      const ph=document.querySelector('#direct-phone');
-      if(ph&&cfg.contact?.phone){ph.setAttribute('href','tel:'+cfg.contact.phone.replace(/\s/g,''));const v=ph.querySelector('.contact-direct-value');if(v)v.textContent=cfg.contact.phone;}
-      const lo=document.querySelectorAll('.contact-direct-item')[2];
-      if(lo&&cfg.contact?.location){const v=lo.querySelector('.contact-direct-value');if(v)v.textContent=cfg.contact.location;}
-      ['linkedin','github','itchio','instagram'].forEach(k=>{const e=document.getElementById('social-'+k);if(e&&cfg.links?.[k])e.setAttribute('href',cfg.links[k]);});
-    }
-  }
-
-  window.SiteConfig = { defaults, load, save, reset, apply, uid, clone };
-
-  /* Auto-apply on non-editor pages.
-     Works whether script is in <head> or end of <body>. */
-  if (!location.pathname.includes('editor')) {
-    function _run() { apply(load()); }
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', _run);
-    } else {
-      _run(); // DOM already ready (script at end of body)
-    }
-  }
+  /* Content is now managed statically by build.js + server.js.
+     Runtime apply() is no longer used on the public pages. */
 })();

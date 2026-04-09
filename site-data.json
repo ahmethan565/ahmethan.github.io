@@ -10,8 +10,8 @@
     "stats": [
       {
         "id": "s1",
-        "num": "2",
-        "label": "Roles"
+        "num": "1 Year",
+        "label": "Experience"
       },
       {
         "id": "s2",
@@ -109,7 +109,7 @@
   "links": {
     "github": "https://github.com/ahmethan565",
     "linkedin": "https://www.linkedin.com/in/ahmethan-bakir/",
-    "itchio": "https://4ahmethan.itch.io",
+    "itchio": "https://4hmethan.itch.io",
     "instagram": "https://www.instagram.com/4hmethan/"
   }
 }
