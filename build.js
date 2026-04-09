@@ -28,6 +28,13 @@ function href(html, id, url) {
     .replace(new RegExp(`(<a[^>]*href=")[^"]*("[^>]*\\bid="${id}")`, 'g'), `$1${url}$2`);
 }
 
+/** Replace src attr on img element with given id */
+function imgSrc(html, id, src) {
+  return html
+    .replace(new RegExp(`(<img[^>]*\\bid="${id}"[^>]*src=")[^"]*(")`,'g'), `$1${src}$2`)
+    .replace(new RegExp(`(<img[^>]*src=")[^"]*("[^>]*\\bid="${id}")`, 'g'), `$1${src}$2`);
+}
+
 // ── Renderers ─────────────────────────────────────────────────────────────────
 const ICONS = {
   unity:      'fa-brands fa-unity',
@@ -60,17 +67,20 @@ function timelineHTML(item) {
 
 // ── Per-page builders ──────────────────────────────────────────────────────────
 function buildIndex(html, cfg) {
-  html = sc(html, 'hero-tag',      esc(cfg.hero.tag));
-  html = sc(html, 'hero-firstname', esc(cfg.hero.firstName));
-  html = sc(html, 'hero-lastname',  esc(cfg.hero.lastName));
-  html = sc(html, 'hero-subtitle',  esc(cfg.hero.subtitle));
-  html = sc(html, 'hero-desc',      esc(cfg.hero.description));
-  html = sc(html, 'hero-badge',     esc(cfg.hero.badgeText));
+  html = sc(html, 'hero-tag',       esc(cfg.hero.tag));
+  html = sc(html, 'hero-firstname',  esc(cfg.hero.firstName));
+  html = sc(html, 'hero-lastname',   esc(cfg.hero.lastName));
+  html = sc(html, 'hero-subtitle',   esc(cfg.hero.subtitle));
+  html = sc(html, 'hero-desc',       esc(cfg.hero.description));
+  html = sc(html, 'hero-badge',      esc(cfg.hero.badgeText));
 
   const statsHTML = (cfg.hero.stats || []).map(s =>
     `<div class="stat-item"><div class="stat-num">${esc(s.num)}</div><div class="stat-label">${esc(s.label)}</div></div>`
   ).join('');
   html = sc(html, 'stats', statsHTML);
+
+  // Hero photo
+  if (cfg.hero.heroImg) html = imgSrc(html, 'hero-img', cfg.hero.heroImg);
 
   // Social hrefs (hero + footer)
   for (const [k, v] of Object.entries(cfg.links)) {
@@ -95,6 +105,9 @@ function buildAbout(html, cfg) {
     `<div class="skill-chip"><i class="fa-solid fa-globe"></i> ${esc(l)}</div>`
   ).join('\n                ');
   html = sc(html, 'languages', '\n                ' + langHTML + '\n              ');
+
+  // About photo
+  if (cfg.about.aboutImg) html = imgSrc(html, 'about-img', cfg.about.aboutImg);
 
   // Footer hrefs
   for (const [k, v] of Object.entries(cfg.links)) {

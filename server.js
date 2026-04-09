@@ -56,7 +56,32 @@ const server = http.createServer((req, res) => {
     req.on('end', () => {
       try {
         const cfg = JSON.parse(body);
-        console.log('\n📥 Save received — building...');
+        console.log('\n📥 Save received — processing...');
+
+        // ── Save base64 images to disk ──────────────────────────────────────
+        const imgDir = path.join(ROOT, 'images');
+        if (!fs.existsSync(imgDir)) fs.mkdirSync(imgDir);
+
+        function saveBase64Image(dataUrl, filename) {
+          const m = dataUrl.match(/^data:image\/(\w+);base64,(.+)$/s);
+          if (!m) return null;
+          const ext = m[1] === 'jpeg' ? 'jpg' : m[1];
+          const outName = `${filename}.${ext}`;
+          fs.writeFileSync(path.join(imgDir, outName), Buffer.from(m[2], 'base64'));
+          console.log(`  🖼  Saved images/${outName}`);
+          return `images/${outName}`;
+        }
+
+        if (cfg.hero && cfg.hero.heroImg && cfg.hero.heroImg.startsWith('data:')) {
+          const saved = saveBase64Image(cfg.hero.heroImg, 'hero-custom');
+          if (saved) cfg.hero.heroImg = saved;
+        }
+        if (cfg.about && cfg.about.aboutImg && cfg.about.aboutImg.startsWith('data:')) {
+          const saved = saveBase64Image(cfg.about.aboutImg, 'about-custom');
+          if (saved) cfg.about.aboutImg = saved;
+        }
+
+        // ── Build HTML files ────────────────────────────────────────────────
         build(cfg);
         console.log('✅ Build complete\n');
         res.writeHead(200, { 'Content-Type': 'application/json' });
