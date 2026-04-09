@@ -124,7 +124,14 @@
 
   window.SiteConfig = { defaults, load, save, reset, apply, uid, clone };
 
+  /* Auto-apply on non-editor pages.
+     Works whether script is in <head> or end of <body>. */
   if (!location.pathname.includes('editor')) {
-    document.addEventListener('DOMContentLoaded', () => apply(load()));
+    function _run() { apply(load()); }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', _run);
+    } else {
+      _run(); // DOM already ready (script at end of body)
+    }
   }
 })();

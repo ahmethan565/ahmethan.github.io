@@ -8,7 +8,6 @@
     <link rel="icon" href="images/ab.png">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="site-config.js"></script>
   </head>
   <body>
     <header>
@@ -43,8 +42,8 @@
           </div>
 
           <div class="about-content">
-            <p id="about-bio1"></p>
-            <p id="about-bio2"></p>
+            <p id="about-bio1">I am a game developer pursuing a Bachelor's degree in Digital Game Design at Bahcesehir University (Expected Graduation: July 2026), with hands-on experience in multiplayer game development using Photon PUN.</p>
+            <p id="about-bio2">Proficient in C#, C++, and algorithm design, with a focus on building engaging combat and puzzle mechanics. Through my role at BAU Code Nexus, I have gained leadership experience in technical community building and hackathon organisation.</p>
 
             <div class="about-block">
               <h2 class="about-block-title"><i class="fa-solid fa-graduation-cap"></i> Education</h2>
@@ -91,10 +90,18 @@
       </div>
     </footer>
 
+    <script src="site-config.js"></script>
     <script>
       const hamburger = document.getElementById('hamburger');
-      const nav = document.getElementById('main-nav');
-      hamburger.addEventListener('click', () => { const o=nav.classList.toggle('open'); hamburger.setAttribute('aria-expanded',o); });
+      const nav       = document.getElementById('main-nav');
+      const backdrop  = document.createElement('div');
+      backdrop.className = 'nav-backdrop';
+      document.body.appendChild(backdrop);
+      function openMenu()  { nav.classList.add('open'); hamburger.classList.add('open'); hamburger.setAttribute('aria-expanded','true'); backdrop.style.display='block'; requestAnimationFrame(()=>backdrop.classList.add('show')); }
+      function closeMenu() { nav.classList.remove('open'); hamburger.classList.remove('open'); hamburger.setAttribute('aria-expanded','false'); backdrop.classList.remove('show'); setTimeout(()=>{backdrop.style.display='none';},300); }
+      hamburger.addEventListener('click', () => nav.classList.contains('open') ? closeMenu() : openMenu());
+      nav.querySelectorAll('.nav-link').forEach(l => l.addEventListener('click', closeMenu));
+      backdrop.addEventListener('click', closeMenu);
     </script>
   </body>
 </html>

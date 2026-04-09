@@ -9,7 +9,6 @@
     <link rel="icon" href="images/ab.png">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="site-config.js"></script>
   </head>
   <body>
 
@@ -111,13 +110,44 @@
       </div>
     </footer>
 
+    <script src="site-config.js"></script>
     <script>
+      // Mobile menu
       const hamburger = document.getElementById('hamburger');
-      const nav = document.getElementById('main-nav');
+      const nav       = document.getElementById('main-nav');
+
+      // Create backdrop element
+      const backdrop = document.createElement('div');
+      backdrop.className = 'nav-backdrop';
+      document.body.appendChild(backdrop);
+
+      function openMenu() {
+        nav.classList.add('open');
+        hamburger.classList.add('open');
+        hamburger.setAttribute('aria-expanded', 'true');
+        backdrop.style.display = 'block';
+        requestAnimationFrame(() => backdrop.classList.add('show'));
+      }
+
+      function closeMenu() {
+        nav.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        backdrop.classList.remove('show');
+        setTimeout(() => { backdrop.style.display = 'none'; }, 300);
+      }
+
       hamburger.addEventListener('click', () => {
-        const open = nav.classList.toggle('open');
-        hamburger.setAttribute('aria-expanded', open);
+        nav.classList.contains('open') ? closeMenu() : openMenu();
       });
+
+      // Close on nav link click
+      nav.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', closeMenu);
+      });
+
+      // Close on backdrop click
+      backdrop.addEventListener('click', closeMenu);
     </script>
 
   </body>
