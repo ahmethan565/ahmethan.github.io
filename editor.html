@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Site Editor | Ahmethan Bakır</title>
+<link rel="icon" href="images/ab.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="site-config.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Inter:wght@400;500;600&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a12;--bg2:#10101e;--bg3:#16162a;
+  --glass:rgba(255,255,255,.04);--border:rgba(255,255,255,.08);
+  --p:#9d4edd;--neon:#c77dff;--blue:#48cae4;
+  --t:#f0eaff;--t2:#a09ab8;--muted:#5c5475;
+  --green:#56d364;--red:#f85149;
+  --r:8px;--tr:.25s cubic-bezier(.4,0,.2,1);--sw:230px;--th:60px;
+}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t);display:flex;flex-direction:column}
+
+/* TOPBAR */
+.topbar{height:var(--th);background:rgba(10,10,18,.92);border-bottom:1px solid var(--border);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:space-between;padding:0 1.4rem;flex-shrink:0;z-index:10}
+.tb-brand{display:flex;align-items:center;gap:.6rem}
+.tb-logo{width:30px;height:30px;border-radius:7px;object-fit:contain;box-shadow:0 0 10px rgba(157,78,221,.5)}
+.tb-name{font-family:'Outfit',sans-serif;font-weight:700;font-size:.95rem}
+.tb-pill{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--neon);background:rgba(157,78,221,.12);border:1px solid rgba(157,78,221,.3);border-radius:100px;padding:.15rem .55rem;margin-left:.3rem}
+.tb-actions{display:flex;gap:.5rem;align-items:center}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:.38rem;font-family:'Outfit',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:.04em;padding:.46rem 1rem;border-radius:var(--r);border:1px solid transparent;cursor:pointer;text-decoration:none;transition:all var(--tr)}
+.btn-primary{background:linear-gradient(135deg,var(--p),#7b2fbe);color:#fff;box-shadow:0 0 14px rgba(157,78,221,.3)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 0 22px rgba(157,78,221,.5)}
+.btn-ghost{background:transparent;color:var(--t2);border-color:var(--border)}
+.btn-ghost:hover{background:var(--glass);color:var(--neon);border-color:rgba(157,78,221,.35)}
+.btn-danger{background:transparent;color:var(--red);border-color:rgba(248,81,73,.25)}
+.btn-danger:hover{background:rgba(248,81,73,.08)}
+.btn-sm{padding:.32rem .7rem;font-size:.75rem}
+.btn-add{display:inline-flex;align-items:center;gap:.4rem;font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:700;color:var(--neon);background:rgba(157,78,221,.08);border:1px dashed rgba(157,78,221,.4);border-radius:var(--r);padding:.42rem .9rem;cursor:pointer;transition:all var(--tr);width:100%;justify-content:center;margin-top:.6rem}
+.btn-add:hover{background:rgba(157,78,221,.15);border-color:var(--neon)}
+.ic-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.85rem;padding:.2rem .35rem;border-radius:4px;transition:color var(--tr)}
+.ic-del:hover{color:var(--red)}
+
+/* LAYOUT */
+.editor-body{display:flex;flex:1;overflow:hidden}
+
+/* SIDEBAR */
+.sidebar{width:var(--sw);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0}
+.sb-label{font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:1.1rem 1.1rem .45rem}
+.sb-item{display:flex;align-items:center;gap:.6rem;padding:.58rem 1.1rem;font-family:'Outfit',sans-serif;font-weight:600;font-size:.84rem;color:var(--t2);cursor:pointer;border:none;background:none;width:100%;text-align:left;border-left:2px solid transparent;transition:all var(--tr)}
+.sb-item i{width:15px;text-align:center;font-size:.8rem;color:var(--muted);transition:color var(--tr)}
+.sb-item:hover{color:var(--t);background:var(--glass)}
+.sb-item.active{color:var(--neon);background:rgba(157,78,221,.08);border-left-color:var(--p)}
+.sb-item.active i{color:var(--neon)}
+.sb-div{height:1px;background:var(--border);margin:.55rem 1.1rem}
+.sb-view{margin:auto 1.1rem 1.1rem;display:flex;align-items:center;justify-content:center;gap:.45rem;padding:.55rem;font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:600;color:var(--t2);text-decoration:none;border:1px solid var(--border);border-radius:var(--r);transition:all var(--tr)}
+.sb-view:hover{color:var(--neon);border-color:rgba(157,78,221,.35);background:var(--glass)}
+
+/* MAIN */
+.editor-main{flex:1;overflow-y:auto;padding:1.8rem 2rem;background:var(--bg)}
+.panel{display:none}.panel.active{display:block;animation:fin .2s ease}
+@keyframes fin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.panel-title{font-family:'Outfit',sans-serif;font-weight:900;font-size:1.3rem;margin-bottom:.3rem;letter-spacing:-.01em}
+.panel-desc{font-size:.82rem;color:var(--t2);margin-bottom:1.6rem;line-height:1.6}
+
+/* SECTIONS */
+.fsec{background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:1.2rem;margin-bottom:1.2rem}
+.fsec-title{font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--neon);margin-bottom:1rem;display:flex;align-items:center;gap:.45rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.85rem}
+.fg{margin-bottom:.85rem}.fg:last-child{margin-bottom:0}
+.fl{display:flex;align-items:center;justify-content:space-between;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:.38rem}
+.fl .cc{font-weight:500;text-transform:none;letter-spacing:0}
+.fi,.ft{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:var(--r);padding:.58rem .82rem;font-family:'Inter',sans-serif;font-size:.86rem;color:var(--t);outline:none;transition:border-color var(--tr),box-shadow var(--tr)}
+.fi::placeholder,.ft::placeholder{color:var(--muted)}
+.fi:focus,.ft:focus{border-color:rgba(157,78,221,.55);box-shadow:0 0 0 3px rgba(157,78,221,.12);background:rgba(255,255,255,.06)}
+.ft{resize:vertical;min-height:80px}
+
+/* IMAGE UPLOAD */
+.img-upload-wrap{display:flex;align-items:center;gap:1.2rem;margin-bottom:.8rem}
+.img-preview-btn{position:relative;width:80px;height:80px;border-radius:10px;overflow:hidden;cursor:pointer;flex-shrink:0;border:2px solid var(--border);transition:border-color var(--tr)}
+.img-preview-btn:hover{border-color:rgba(157,78,221,.5)}
+.img-preview-btn img{width:100%;height:100%;object-fit:cover;display:block}
+.img-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25rem;opacity:0;transition:opacity var(--tr)}
+.img-preview-btn:hover .img-overlay{opacity:1}
+.img-overlay i{font-size:1rem;color:#fff}
+.img-overlay span{font-size:.65rem;color:#fff;font-family:'Outfit',sans-serif;font-weight:600}
+.img-upload-info{flex:1}
+.img-upload-info p{font-size:.8rem;color:var(--t2);line-height:1.5;margin-bottom:.5rem}
+
+/* ENTRY CARDS */
+.entry-card{border:1px solid var(--border);border-radius:10px;margin-bottom:.7rem;overflow:hidden;background:var(--bg3)}
+.entry-head{display:flex;align-items:center;gap:.6rem;padding:.7rem .9rem;cursor:pointer;user-select:none;transition:background var(--tr)}
+.entry-head:hover{background:rgba(255,255,255,.03)}
+.entry-chevron{color:var(--muted);font-size:.7rem;transition:transform var(--tr);flex-shrink:0}
+.entry-card.open .entry-chevron{transform:rotate(90deg)}
+.entry-summary{flex:1;font-size:.82rem;font-weight:600;color:var(--t2);font-family:'Outfit',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.entry-body{display:none;padding:.9rem;border-top:1px solid var(--border);background:rgba(255,255,255,.02)}
+.entry-card.open .entry-body{display:block}
+
+/* TAGS */
+.tag-list{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.6rem}
+.tag-chip{display:inline-flex;align-items:center;gap:.4rem;background:rgba(157,78,221,.1);border:1px solid rgba(157,78,221,.25);border-radius:100px;padding:.28rem .7rem;font-size:.78rem;font-weight:600;color:var(--t2)}
+.tag-chip button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.7rem;line-height:1;padding:0;transition:color var(--tr)}
+.tag-chip button:hover{color:var(--red)}
+.tag-add-row{display:flex;gap:.5rem}
+.tag-add-row .fi{flex:1}
+
+/* BULLETS */
+.bullet-item{display:flex;align-items:center;gap:.5rem;margin-bottom:.45rem}
+.bullet-item .fi{flex:1;font-size:.82rem}
+
+/* TOAST */
+#toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:.65rem 1.1rem;font-family:'Outfit',sans-serif;font-weight:600;font-size:.84rem;display:flex;align-items:center;gap:.55rem;box-shadow:0 8px 28px rgba(0,0,0,.4);transform:translateY(16px);opacity:0;transition:all var(--tr);z-index:999;pointer-events:none}
+#toast.show{transform:translateY(0);opacity:1}
+#toast.ok{border-color:rgba(86,211,100,.4)} #toast.ok i{color:var(--green)}
+#toast.err{border-color:rgba(248,81,73,.4)} #toast.err i{color:var(--red)}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(157,78,221,.3);border-radius:10px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-brand">
+    <img class="tb-logo" src="images/ab.png" alt="logo">
+    <span class="tb-name">Ahmethan Bakır</span>
+    <span class="tb-pill">Editor</span>
+  </div>
+  <div class="tb-actions">
+    <button class="btn btn-danger btn-sm" id="btn-reset"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+    <button class="btn btn-primary" id="btn-save"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+  </div>
+</div>
+
+<div class="editor-body">
+  <aside class="sidebar">
+    <div class="sb-label">Pages</div>
+    <button class="sb-item active" data-panel="home"><i class="fa-solid fa-house"></i> Home</button>
+    <button class="sb-item" data-panel="about"><i class="fa-solid fa-user"></i> About</button>
+    <button class="sb-item" data-panel="contact"><i class="fa-solid fa-envelope"></i> Contact</button>
+    <div class="sb-div"></div>
+    <div class="sb-label">Settings</div>
+    <button class="sb-item" data-panel="links"><i class="fa-solid fa-link"></i> Links & URLs</button>
+    <div style="flex:1"></div>
+    <div style="padding:0 1.1rem .4rem"><div class="sb-div" style="margin:0 0 .7rem"></div>
+      <a href="index.html" target="_blank" class="sb-view"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Site</a>
+    </div>
+  </aside>
+
+  <main class="editor-main">
+
+    <!-- HOME -->
+    <div class="panel active" id="panel-home">
+      <p class="panel-title">Home Page</p>
+      <p class="panel-desc">Edit the hero section shown to visitors.</p>
+
+      <div class="fsec">
+        <div class="fsec-title"><i class="fa-solid fa-image"></i> Hero Photo</div>
+        <div class="img-upload-wrap">
+          <div class="img-preview-btn" onclick="document.getElementById('heroFileIn').click()">
+            <img id="hero-preview" src="images/IMG_0768.jpg" alt="hero">
+            <div class="img-overlay"><i class="fa-solid fa-camera"></i><span>Change</span></div>
+          </div>
+          <div class="img-upload-info">
+            <p>Click to upload a new photo. Image is compressed automatically and stored locally.</p>
+            <button class="btn btn-ghost btn-sm" id="heroImgReset"><i class="fa-solid fa-trash"></i> Remove custom</button>
+          </div>
+        </div>
+        <input type="file" id="heroFileIn" accept="image/*" style="display:none">
+      </div>
+
+      <div class="fsec">
+        <div class="fsec-title"><i class="fa-solid fa-pen"></i> Hero Text</div>
+        <div class="fg"><label class="fl">Tag Line</label><input class="fi" id="h-tag" type="text"></div>
+        <div class="form-row">
+          <div class="fg"><label class="fl">First Name</label><input class="fi" id="h-fn" type="text"></div>
+          <div class="fg"><label class="fl">Last Name (Gradient)</label><input class="fi" id="h-ln" type="text"></div>
+        </div>
+        <div class="fg"><label class="fl">Subtitle</label><input class="fi" id="h-sub" type="text"></div>
+        <div class="fg"><label class="fl">Description <span class="cc" id="cc-desc"></span></label><textarea class="ft" id="h-desc" rows="4"></textarea></div>
+        <div class="fg"><label class="fl">Badge Text (on photo)</label><input class="fi" id="h-badge" type="text"></div>
+      </div>
+
+      <div class="fsec">
+        <div class="fsec-title"><i class="fa-solid fa-chart-bar"></i> Stats</div>
+        <div id="stats-list"></div>
+        <button class="btn-add" onclick="addStat()"><i class="fa-solid fa-plus"></i> Add Stat</button>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <div class="panel" id="panel-about">
+      <p class="panel-title">About Page</p>
+      <p class="panel-desc">Edit biography, images, education, experience and skills.</p>
+
+      <div class="fsec">
+        <div class="fsec-title"><i class="fa-solid fa-image"></i> About Photo</div>
+        <div class="img-upload-wrap">
+          <div class="img-preview-btn" onclick="document.getElementById('aboutFileIn').click()">
+            <img id="about-preview" src="images/IMG_6899.png" alt="about">
+            <div class="img-overlay"><i class="fa-solid fa-camera"></i><span>Change</span></div>
+          </div>
+          <div class="img-upload-info">
+            <p>Click to upload a new photo. Image is compressed and saved locally.</p>
+            <button class="btn btn-ghost btn-sm" id="aboutImgReset"><i class="fa-solid fa-trash"></i> Remove custom</button>
+          </div>
+        </div>
+        <input type="file" id="aboutFileIn" accept="image/*" style="display:none">
+      </div>
+
+      <div class="fsec">
+        <div class="fsec-title"><i class="fa-solid fa-align-left"></i> Biography</div>
+        <div class="fg"><label class="fl">Paragraph 1 <span class="cc" id="cc-bio1"></span></label><textarea class="ft" id="a-bio1" rows="4"></textarea></div>
+        <div class="fg"><label class="fl">Paragraph 2 <span class="cc" id="cc-bio2"></span></label><textarea class="ft" id="a-bio2" rows="4"></textarea></div>
+      </div>
+
+      <div class="fsec">
+        <div class="fsec-title"><i class="fa-solid fa-graduation-cap"></i> Education</div>
+        <div id="edu-list"></div>
+        <button class="btn-add" onclick="addEdu()"><i class="fa-solid fa-plus"></i> Add Education</button>
+      </div>
+
+      <div class="fsec">
+        <div class="fsec-title"><i class="fa-solid fa-briefcase"></i> Experience</div>
+        <div id="exp-list"></div>
+        <button class="btn-add" onclick="addExp()"><i class="fa-solid fa-plus"></i> Add Experience</button>
+      </div>
+
+      <div class="fsec">
+        <div class="fsec-title"><i class="fa-solid fa-code"></i> Technical Skills</div>
+        <div id="skill-tags" class="tag-list"></div>
+        <div class="tag-add-row">
+          <input class="fi" id="skill-input" type="text" placeholder="e.g. Blender">
+          <button class="btn btn-ghost btn-sm" onclick="addSkill()"><i class="fa-solid fa-plus"></i> Add</button>
+        </div>
+      </div>
+
+      <div class="fsec">
+        <div class="fsec-title"><i class="fa-solid fa-language"></i> Languages</div>
+        <div id="lang-tags" class="tag-list"></div>
+        <div class="tag-add-row">
+          <input class="fi" id="lang-input" type="text" placeholder="e.g. German — A2">
+          <button class="btn btn-ghost btn-sm" onclick="addLang()"><i class="fa-solid fa-plus"></i> Add</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="panel" id="panel-contact">
+      <p class="panel-title">Contact Page</p>
+      <p class="panel-desc">Update your direct contact details.</p>
+      <div class="fsec">
+        <div class="fsec-title"><i class="fa-solid fa-address-card"></i> Contact Details</div>
+        <div class="fg"><label class="fl">Email</label><input class="fi" id="c-email" type="email"></div>
+        <div class="fg"><label class="fl">Phone</label><input class="fi" id="c-phone" type="tel"></div>
+        <div class="fg"><label class="fl">Location</label><input class="fi" id="c-loc" type="text"></div>
+      </div>
+    </div>
+
+    <!-- LINKS -->
+    <div class="panel" id="panel-links">
+      <p class="panel-title">Links & URLs</p>
+      <p class="panel-desc">Social profile URLs applied across all pages.</p>
+      <div class="fsec">
+        <div class="fsec-title"><i class="fa-solid fa-link"></i> Profiles</div>
+        <div class="fg"><label class="fl"><i class="fa-brands fa-github" style="margin-right:.4rem"></i>GitHub</label><input class="fi" id="l-gh" type="url"></div>
+        <div class="fg"><label class="fl"><i class="fa-brands fa-linkedin-in" style="margin-right:.4rem"></i>LinkedIn</label><input class="fi" id="l-li" type="url"></div>
+        <div class="fg"><label class="fl"><i class="fa-brands fa-itch-io" style="margin-right:.4rem"></i>Itch.io</label><input class="fi" id="l-it" type="url"></div>
+        <div class="fg"><label class="fl"><i class="fa-brands fa-instagram" style="margin-right:.4rem"></i>Instagram</label><input class="fi" id="l-ig" type="url"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div id="toast"><i class="fa-solid fa-check"></i> <span id="toast-msg"></span></div>
+
+<script>
+const { load, save, reset, uid, clone } = SiteConfig;
+let S = load(); // mutable editor state
+
+/* ── Helpers ── */
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function escA(s){return String(s||'').replace(/"/g,'&quot;');}
+function g(id){return document.getElementById(id);}
+function setV(id,val){const e=g(id);if(e&&val!=null)e.value=val;}
+let toastT;
+function toast(msg,type='ok'){const t=g('toast');const i=t.querySelector('i');g('toast-msg').textContent=msg;t.className='show '+type;i.className=type==='ok'?'fa-solid fa-check':'fa-solid fa-triangle-exclamation';clearTimeout(toastT);toastT=setTimeout(()=>t.className='',3000);}
+
+/* ── Image compress ── */
+async function compress(file,max=700,q=.72){
+  return new Promise(res=>{
+    const fr=new FileReader();
+    fr.onload=e=>{const img=new Image();img.onload=()=>{const c=document.createElement('canvas');let w=img.width,h=img.height;if(w>max){h=Math.round(h*max/w);w=max;}c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);res(c.toDataURL('image/jpeg',.72));};img.src=e.target.result;};
+    fr.readAsDataURL(file);
+  });
+}
+g('heroFileIn').onchange=async e=>{const f=e.target.files[0];if(!f)return;const b=await compress(f);S.hero.heroImg=b;g('hero-preview').src=b;};
+g('heroImgReset').onclick=()=>{S.hero.heroImg=null;g('hero-preview').src='images/IMG_0768.jpg';};
+g('aboutFileIn').onchange=async e=>{const f=e.target.files[0];if(!f)return;const b=await compress(f);S.about.aboutImg=b;g('about-preview').src=b;};
+g('aboutImgReset').onclick=()=>{S.about.aboutImg=null;g('about-preview').src='images/IMG_6899.png';};
+
+/* ── Char counters ── */
+function cc(inId,ccId){const i=g(inId),c=g(ccId);if(!i||!c)return;const u=()=>c.textContent=i.value.length+' chars';i.addEventListener('input',u);u();}
+cc('h-desc','cc-desc');cc('a-bio1','cc-bio1');cc('a-bio2','cc-bio2');
+
+/* ── Stats ── */
+function renderStats(){
+  const el=g('stats-list');
+  el.innerHTML=S.hero.stats.map((s,i)=>`
+    <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem">
+      <input class="fi" style="width:90px;flex-shrink:0" value="${escA(s.num)}" placeholder="Num" oninput="S.hero.stats[${i}].num=this.value">
+      <input class="fi" style="flex:1" value="${escA(s.label)}" placeholder="Label" oninput="S.hero.stats[${i}].label=this.value">
+      <button class="ic-del" onclick="removeStat(${i})"><i class="fa-solid fa-trash"></i></button>
+    </div>`).join('');
+}
+function addStat(){S.hero.stats.push({id:uid(),num:'',label:''});renderStats();}
+function removeStat(i){S.hero.stats.splice(i,1);renderStats();}
+
+/* ── Skills & Languages ── */
+function renderTags(arr,containerId,rmFn){
+  g(containerId).innerHTML=arr.map((v,i)=>`<span class="tag-chip">${esc(v)}<button onclick="${rmFn}(${i})"><i class="fa-solid fa-xmark"></i></button></span>`).join('');
+}
+function addSkill(){const v=g('skill-input').value.trim();if(!v)return;S.about.skills.push(v);g('skill-input').value='';renderTags(S.about.skills,'skill-tags','removeSkill');}
+function removeSkill(i){S.about.skills.splice(i,1);renderTags(S.about.skills,'skill-tags','removeSkill');}
+function addLang(){const v=g('lang-input').value.trim();if(!v)return;S.about.languages.push(v);g('lang-input').value='';renderTags(S.about.languages,'lang-tags','removeLang');}
+function removeLang(i){S.about.languages.splice(i,1);renderTags(S.about.languages,'lang-tags','removeLang');}
+g('skill-input').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addSkill();}});
+g('lang-input').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addLang();}});
+
+/* ── Timeline (shared for edu + exp) ── */
+function renderBullets(listId,bullets,collKey,itemIdx){
+  const el=g('bullets-'+listId);if(!el)return;
+  el.innerHTML=bullets.map((b,bi)=>`
+    <div class="bullet-item">
+      <input class="fi" value="${escA(b)}" placeholder="Bullet point" oninput="updateBullet('${collKey}',${itemIdx},${bi},this.value)">
+      <button class="ic-del" onclick="removeBullet('${collKey}',${itemIdx},${bi})"><i class="fa-solid fa-xmark"></i></button>
+    </div>`).join('');
+}
+function updateBullet(coll,idx,bi,val){S.about[coll][idx].bullets[bi]=val;}
+function removeBullet(coll,idx,bi){S.about[coll][idx].bullets.splice(bi,1);renderBullets(S.about[coll][idx].id,S.about[coll][idx].bullets,coll,idx);}
+function addBullet(coll,idx){S.about[coll][idx].bullets.push('');renderBullets(S.about[coll][idx].id,S.about[coll][idx].bullets,coll,idx);}
+
+function timelineCard(item,coll,idx,showBullets){
+  const bid=showBullets?`
+    <div class="fg" style="margin-top:.7rem">
+      <div class="fl" style="margin-bottom:.4rem">Bullet Points</div>
+      <div id="bullets-${item.id}"></div>
+      <button class="btn-add" style="margin-top:.4rem" onclick="addBullet('${coll}',${idx})"><i class="fa-solid fa-plus"></i> Add Bullet</button>
+    </div>`:'';
+  return `
+    <div class="entry-card" id="card-${item.id}">
+      <div class="entry-head" onclick="toggleCard('${item.id}')">
+        <i class="fa-solid fa-chevron-right entry-chevron" id="chev-${item.id}"></i>
+        <span class="entry-summary" id="sum-${item.id}">${esc(item.role||'New Entry')} @ ${esc(item.company||'—')}</span>
+        <button class="ic-del" onclick="removeEntry('${coll}',${idx},event)"><i class="fa-solid fa-trash"></i></button>
+      </div>
+      <div class="entry-body">
+        <div class="form-row">
+          <div class="fg"><label class="fl">Position / Role</label><input class="fi" value="${escA(item.role)}" oninput="updateEntry('${coll}',${idx},'role',this.value,this)"></div>
+          <div class="fg"><label class="fl">Company / Institution</label><input class="fi" value="${escA(item.company)}" oninput="updateEntry('${coll}',${idx},'company',this.value,this)"></div>
+        </div>
+        <div class="form-row">
+          <div class="fg"><label class="fl">From</label><input class="fi" value="${escA(item.dateFrom)}" oninput="S.about['${coll}'][${idx}].dateFrom=this.value;refreshSum('${coll}',${idx})"></div>
+          <div class="fg"><label class="fl">To</label><input class="fi" value="${escA(item.dateTo)}" oninput="S.about['${coll}'][${idx}].dateTo=this.value;refreshSum('${coll}',${idx})"></div>
+        </div>
+        ${bid}
+      </div>
+    </div>`;
+}
+
+function refreshSum(coll,idx){
+  const item=S.about[coll][idx];
+  const el=g('sum-'+item.id);
+  if(el)el.textContent=(item.role||'New Entry')+' @ '+(item.company||'—');
+}
+function updateEntry(coll,idx,field,val){S.about[coll][idx][field]=val;refreshSum(coll,idx);}
+function toggleCard(id){const c=g('card-'+id);c.classList.toggle('open');}
+function removeEntry(coll,idx,e){e.stopPropagation();S.about[coll].splice(idx,1);coll==='education'?renderEdu():renderExp();}
+
+function renderEdu(){
+  g('edu-list').innerHTML=S.about.education.map((it,i)=>timelineCard(it,'education',i,false)).join('');
+}
+function renderExp(){
+  g('exp-list').innerHTML=S.about.experience.map((it,i)=>timelineCard(it,'experience',i,true)).join('');
+  S.about.experience.forEach((it,i)=>renderBullets(it.id,it.bullets,'experience',i));
+}
+function addEdu(){S.about.education.push({id:uid(),role:'',company:'',dateFrom:'',dateTo:'',bullets:[]});renderEdu();}
+function addExp(){S.about.experience.push({id:uid(),role:'',company:'',dateFrom:'',dateTo:'',bullets:[]});renderExp();}
+
+/* ── Populate all fields ── */
+function populate(){
+  // Hero
+  if(S.hero.heroImg) g('hero-preview').src=S.hero.heroImg;
+  setV('h-tag',S.hero.tag);setV('h-fn',S.hero.firstName);setV('h-ln',S.hero.lastName);
+  setV('h-sub',S.hero.subtitle);setV('h-desc',S.hero.description);setV('h-badge',S.hero.badgeText);
+  // About
+  if(S.about.aboutImg) g('about-preview').src=S.about.aboutImg;
+  setV('a-bio1',S.about.bio1);setV('a-bio2',S.about.bio2);
+  // Contact
+  setV('c-email',S.contact.email);setV('c-phone',S.contact.phone);setV('c-loc',S.contact.location);
+  // Links
+  setV('l-gh',S.links.github);setV('l-li',S.links.linkedin);setV('l-it',S.links.itchio);setV('l-ig',S.links.instagram);
+  // Dynamic
+  renderStats();renderEdu();renderExp();
+  renderTags(S.about.skills,'skill-tags','removeSkill');
+  renderTags(S.about.languages,'lang-tags','removeLang');
+  // Init char counters
+  ['h-desc','a-bio1','a-bio2'].forEach(id=>{const e=g(id);if(e)e.dispatchEvent(new Event('input'));});
+}
+
+/* ── Save ── */
+g('btn-save').addEventListener('click',()=>{
+  S.hero.tag=g('h-tag').value;S.hero.firstName=g('h-fn').value;S.hero.lastName=g('h-ln').value;
+  S.hero.subtitle=g('h-sub').value;S.hero.description=g('h-desc').value;S.hero.badgeText=g('h-badge').value;
+  S.about.bio1=g('a-bio1').value;S.about.bio2=g('a-bio2').value;
+  S.contact.email=g('c-email').value;S.contact.phone=g('c-phone').value;S.contact.location=g('c-loc').value;
+  S.links.github=g('l-gh').value;S.links.linkedin=g('l-li').value;S.links.itchio=g('l-it').value;S.links.instagram=g('l-ig').value;
+  save(S)?toast('Changes saved!','ok'):toast('Failed to save.','err');
+});
+
+/* ── Reset ── */
+g('btn-reset').addEventListener('click',()=>{
+  if(!confirm('Reset everything to defaults?'))return;
+  S=reset();populate();toast('Reset to defaults.','ok');
+});
+
+/* ── Tabs ── */
+document.querySelectorAll('.sb-item[data-panel]').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.sb-item').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    g('panel-'+b.dataset.panel).classList.add('active');
+  });
+});
+
+populate();
+</script>
+</body>
+</html>

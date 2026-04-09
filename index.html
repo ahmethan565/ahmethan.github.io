@@ -1,49 +1,124 @@
 <!DOCTYPE html>
-<html>
-    <head lang="tr">
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="style.css">
-        <title>Ahmethan Bakır</title>
-        <meta name="Ahmethan Bakır,ın kişisel Web Sitesi">
-        <meta name="keywords" content="Ahmethan,Bakır,podium.f1">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" href="images/ab.png">
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahmethan Bakır | Digital Game Design Student</title>
+    <meta name="description" content="Ahmethan Bakır — Unity & Unreal Engine Developer, Digital Game Design student at Bahcesehir University.">
+    <meta name="keywords" content="Ahmethan Bakır, Unity Developer, Unreal Engine, Game Design, Bahcesehir University">
+    <link rel="icon" href="images/ab.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="site-config.js"></script>
+  </head>
+  <body>
 
-    </head>
-    <body>
-        <header>
-            <div class="logo-area">
-                <a href="index.html"><img class="logo" src="images/Başlıksız-1.png"></a>
-
-            </div>
-
-        </header>
-        <nav>
-            <div id="menudiv">
-            <li class="menu">
-                <ul><a class="menuyazı" href="index.html">ANASAYFA</a></ul>
-                <ul><a class="menuyazı" href="about.html">HAKKIMDA</a></ul>
-                <ul><a class="menuyazı" href="contact.html">İLETİŞİM</a></ul>
-            </li>
-            </div>
+    <!-- HEADER -->
+    <header>
+      <div class="header-inner">
+        <a href="index.html" class="logo-link" aria-label="Home">
+          <img class="logo-badge" src="images/ab.png" alt="Ahmethan Bakır Logo">
+          <span class="logo-name">Ahmethan Bakır</span>
+        </a>
+        <nav id="main-nav" aria-label="Main Navigation">
+          <ul>
+            <li><a href="index.html" class="nav-link active" id="nav-home">Home</a></li>
+            <li><a href="about.html" class="nav-link" id="nav-about">About</a></li>
+            <li><a href="contact.html" class="nav-link" id="nav-contact">Contact</a></li>
+          </ul>
         </nav>
-        <article>
-            <div class="imgat">
-            <img class="ben" src="images/IMG_0768.png">
-            <p class="opnt">
-                Merhaba,Ahmethan Bakır'ın kişisel Web Sitesine hoşgeldiniz.
-            </p>
+        <button class="hamburger" id="hamburger" aria-label="Toggle Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
 
+    <!-- MAIN -->
+    <main>
+      <section class="hero" aria-label="Hero Section">
 
+        <div class="hero-text">
+          <span class="hero-tag">Digital Game Design Student</span>
 
-            </div>
-        </article>
-        <footer>
-            <div class="soslog">
-                <a href="https://www.instagram.com/4hmethan/" target="_blank"><img id="instagramimg" src="images/instagram.png"></a>
-                <a href="https://twitter.com/4hmethan" target="_blank"><img id="twitterimg" src="images/twitter.png"></a>
-                <a href="https://www.linkedin.com/in/ahmethan-bakir-1268b2231/" target="_blank"><img id="linkedinimg" src="images/linkedin.png"></a>
-            </div>
-        </footer>
-     </body>
+          <h1 class="hero-title">
+            Ahmethan<br>
+            <span class="highlight">Bakır</span>
+          </h1>
+
+          <p class="hero-subtitle">Unity &amp; Unreal Engine Developer</p>
+
+          <p class="hero-desc">
+            A game developer pursuing a B.Sc. in Digital Game Design at Bahcesehir University,
+            with hands-on experience in multiplayer game development using Photon PUN.
+            Proficient in C# and C++, focused on combat mechanics and puzzle systems.
+          </p>
+
+          <div class="hero-actions">
+            <a href="about.html" class="btn btn-primary" id="btn-about">
+              <i class="fa-solid fa-user"></i> About Me
+            </a>
+            <a href="contact.html" class="btn btn-secondary" id="btn-contact">
+              <i class="fa-solid fa-envelope"></i> Contact
+            </a>
+          </div>
+
+          <div class="hero-links">
+            <a href="https://4ahmethan.itch.io" target="_blank" rel="noopener" class="hero-ext-link" id="link-itchio">
+              <i class="fa-brands fa-itch-io"></i> Itch.io
+            </a>
+            <a href="https://github.com/ahmethan565" target="_blank" rel="noopener" class="hero-ext-link" id="link-github">
+              <i class="fa-brands fa-github"></i> GitHub
+            </a>
+            <a href="https://www.linkedin.com/in/ahmethan-bakir/" target="_blank" rel="noopener" class="hero-ext-link" id="link-linkedin">
+              <i class="fa-brands fa-linkedin-in"></i> LinkedIn
+            </a>
+          </div>
+
+          <div class="hero-stats" id="stats-container"></div>
+        </div>
+
+        <div class="hero-image-wrap">
+          <div class="hero-img-ring">
+            <img id="hero-img" class="hero-img" src="images/IMG_0768.jpg" alt="Ahmethan Bakır photo" loading="eager">
+          </div>
+          <div class="hero-badge">
+            <i class="fa-solid fa-gamepad"></i>
+            Ranke Studios
+          </div>
+        </div>
+
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-inner">
+        <span class="footer-copy">&copy; 2025 Ahmethan Bakır</span>
+        <div class="footer-socials">
+          <a href="https://4ahmethan.itch.io" target="_blank" rel="noopener" class="footer-social-btn" aria-label="Itch.io" id="footer-itchio">
+            <i class="fa-brands fa-itch-io"></i>
+          </a>
+          <a href="https://github.com/ahmethan565" target="_blank" rel="noopener" class="footer-social-btn" aria-label="GitHub" id="footer-github">
+            <i class="fa-brands fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/ahmethan-bakir/" target="_blank" rel="noopener" class="footer-social-btn" aria-label="LinkedIn" id="footer-linkedin">
+            <i class="fa-brands fa-linkedin-in"></i>
+          </a>
+          <a href="https://www.instagram.com/4hmethan/" target="_blank" rel="noopener" class="footer-social-btn" aria-label="Instagram" id="footer-instagram">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const hamburger = document.getElementById('hamburger');
+      const nav = document.getElementById('main-nav');
+      hamburger.addEventListener('click', () => {
+        const open = nav.classList.toggle('open');
+        hamburger.setAttribute('aria-expanded', open);
+      });
+    </script>
+
+  </body>
 </html>

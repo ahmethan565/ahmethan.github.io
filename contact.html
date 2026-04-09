@@ -1,59 +1,173 @@
 <!DOCTYPE html>
-<html>
-    <head lang="tr">
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="style.css">
-        <title>Ahmethan Bakır</title>
-        <meta name="Ahmethan Bakır,ın kişisel Web Sitesi">
-        <meta name="keywords" content="Ahmethan,Bakır,podium.f1">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" href="images/ab.png">
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Ahmethan Bakır</title>
+    <meta name="description" content="Contact Ahmethan Bakır — email, phone, LinkedIn, GitHub and Itch.io.">
+    <meta name="keywords" content="Ahmethan Bakır, contact, email, LinkedIn, GitHub">
+    <link rel="icon" href="images/ab.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="site-config.js"></script>
+  </head>
+  <body>
 
-    </head>
-    <body>
-        <header>
-            <div class="logo-area">
-                <a href="index.html"><img class="logo" src="images/Başlıksız-1.png"></a>
-
-            </div>
-
-        </header>
-        <nav>
-            <div id="menudiv">
-            <li class="menu">
-                <ul><a class="menuyazı" href="index.html">ANASAYFA</a></ul>
-                <ul><a class="menuyazı" href="about.html">HAKKIMDA</a></ul>
-                <ul><a class="menuyazı" href="contact.html">İLETİŞİM</a></ul>
-            </li>
-            </div>
+    <!-- HEADER -->
+    <header>
+      <div class="header-inner">
+        <a href="index.html" class="logo-link" aria-label="Home">
+          <img class="logo-badge" src="images/ab.png" alt="Ahmethan Bakır Logo">
+          <span class="logo-name">Ahmethan Bakır</span>
+        </a>
+        <nav id="main-nav" aria-label="Main Navigation">
+          <ul>
+            <li><a href="index.html" class="nav-link" id="nav-home">Home</a></li>
+            <li><a href="about.html" class="nav-link" id="nav-about">About</a></li>
+            <li><a href="contact.html" class="nav-link active" id="nav-contact">Contact</a></li>
+          </ul>
         </nav>
-        <article>
-            <div class="contacta">
-                <a href="https://www.instagram.com/4hmethan/" target="_blank">Instagram Hesabım</a>
-                <br>
-                <br>
-                <br>
-                <a href="https://twitter.com/4hmethan" target="_blank">Twitter Hesabım</a>
-                <br>
-            </div>
-            <div class="formdiv">
-                <form name="email" accept="email.php" method="post">
-                    <table>
-                        <tr><td>Ad Soyad:</td><td><input class="formboşluk" type="text" name="ad"></td></tr>
-                        <tr><td>E-Mail:</td><td><input  class="formboşluk" type="email" name="email"></td></tr>
-                        <tr><td>Mesajınız:</td><td><textarea name="mesaj" cols="25" rows="7" ></textarea></td></tr>
-                        <tr><td></td><td><input class="formbutton" type="submit"> <input class="formbutton" type="reset"></td></tr>
-                    </table>
-                </form>
-            </div>
-        </article>
-        <footer>
-            <div class="soslog">
-                <a href="https://www.instagram.com/4hmethan/" target="_blank"><img id="instagramimg" src="images/instagram.png"></a>
-                <a href="https://twitter.com/4hmethan" target="_blank"><img id="twitterimg" src="images/twitter.png"></a>
-                <a href="https://www.linkedin.com/in/ahmethan-bakir-1268b2231/" target="_blank"><img id="linkedinimg" src="images/linkedin.png"></a>
-            </div>
-        </footer>
-     </body>
-</html>
+        <button class="hamburger" id="hamburger" aria-label="Toggle Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
 
+    <!-- MAIN -->
+    <main>
+      <section class="contact-section">
+
+        <div class="contact-grid">
+
+          <!-- Left: info and links -->
+          <div class="contact-info">
+            <p class="section-eyebrow">Contact Information</p>
+            <h1>Get In Touch</h1>
+
+            <p>
+              Available for collaboration opportunities, project discussions, or
+              technical inquiries. Reach out through any of the channels below.
+            </p>
+
+            <!-- Direct contact -->
+            <div class="contact-direct">
+              <a href="mailto:1@ahmethan.com.tr" class="contact-direct-item" id="direct-email">
+                <span class="social-icon"><i class="fa-solid fa-envelope"></i></span>
+                <div>
+                  <span class="contact-direct-label">Email</span>
+                  <span class="contact-direct-value">1@ahmethan.com.tr</span>
+                </div>
+              </a>
+              <a href="tel:+905466200455" class="contact-direct-item" id="direct-phone">
+                <span class="social-icon"><i class="fa-solid fa-phone"></i></span>
+                <div>
+                  <span class="contact-direct-label">Phone</span>
+                  <span class="contact-direct-value">+90 546 620 04 55</span>
+                </div>
+              </a>
+              <div class="contact-direct-item">
+                <span class="social-icon"><i class="fa-solid fa-location-dot"></i></span>
+                <div>
+                  <span class="contact-direct-label">Location</span>
+                  <span class="contact-direct-value">Üsküdar, Istanbul</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="social-links">
+              <a href="https://www.linkedin.com/in/ahmethan-bakir/" target="_blank" rel="noopener" class="social-link" id="social-linkedin">
+                <span class="social-icon"><i class="fa-brands fa-linkedin-in"></i></span>
+                <span>LinkedIn</span>
+                <i class="fa-solid fa-arrow-right" style="margin-left:auto;font-size:0.75rem;color:var(--text-muted)"></i>
+              </a>
+              <a href="https://github.com/ahmethan565" target="_blank" rel="noopener" class="social-link" id="social-github">
+                <span class="social-icon"><i class="fa-brands fa-github"></i></span>
+                <span>GitHub</span>
+                <i class="fa-solid fa-arrow-right" style="margin-left:auto;font-size:0.75rem;color:var(--text-muted)"></i>
+              </a>
+              <a href="https://4ahmethan.itch.io" target="_blank" rel="noopener" class="social-link" id="social-itchio">
+                <span class="social-icon"><i class="fa-brands fa-itch-io"></i></span>
+                <span>Itch.io</span>
+                <i class="fa-solid fa-arrow-right" style="margin-left:auto;font-size:0.75rem;color:var(--text-muted)"></i>
+              </a>
+              <a href="https://www.instagram.com/4hmethan/" target="_blank" rel="noopener" class="social-link" id="social-instagram">
+                <span class="social-icon"><i class="fa-brands fa-instagram"></i></span>
+                <span>Instagram</span>
+                <i class="fa-solid fa-arrow-right" style="margin-left:auto;font-size:0.75rem;color:var(--text-muted)"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right: form -->
+          <div class="contact-form-wrap">
+            <h3><i class="fa-solid fa-paper-plane" style="color:var(--accent-neon);margin-right:0.5rem"></i>Send a Message</h3>
+
+            <form name="contact-form" action="https://formspree.io/f/xkndgpjy" method="POST" id="contact-form">
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="input-name">Full Name</label>
+                  <input class="form-input" type="text" id="input-name" name="full_name" placeholder="Your name" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="input-email">Email</label>
+                  <input class="form-input" type="email" id="input-email" name="email" placeholder="you@example.com" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="input-subject">Subject</label>
+                <input class="form-input" type="text" id="input-subject" name="subject" placeholder="Subject line">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="input-message">Message</label>
+                <textarea class="form-textarea" id="input-message" name="message" placeholder="Write your message here..." required></textarea>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="btn-send">
+                  <i class="fa-solid fa-paper-plane"></i> Send
+                </button>
+                <button type="reset" class="btn-reset" id="btn-reset">Clear</button>
+              </div>
+
+            </form>
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-inner">
+        <span class="footer-copy">&copy; 2025 Ahmethan Bakır</span>
+        <div class="footer-socials">
+          <a href="https://4ahmethan.itch.io" target="_blank" rel="noopener" class="footer-social-btn" aria-label="Itch.io" id="footer-itchio">
+            <i class="fa-brands fa-itch-io"></i>
+          </a>
+          <a href="https://github.com/ahmethan565" target="_blank" rel="noopener" class="footer-social-btn" aria-label="GitHub" id="footer-github">
+            <i class="fa-brands fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/ahmethan-bakir/" target="_blank" rel="noopener" class="footer-social-btn" aria-label="LinkedIn" id="footer-linkedin">
+            <i class="fa-brands fa-linkedin-in"></i>
+          </a>
+          <a href="https://www.instagram.com/4hmethan/" target="_blank" rel="noopener" class="footer-social-btn" aria-label="Instagram" id="footer-instagram">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const hamburger = document.getElementById('hamburger');
+      const nav = document.getElementById('main-nav');
+      hamburger.addEventListener('click', () => {
+        const open = nav.classList.toggle('open');
+        hamburger.setAttribute('aria-expanded', open);
+      });
+    </script>
+
+  </body>
+</html>
