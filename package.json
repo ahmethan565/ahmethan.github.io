@@ -1,0 +1,12 @@
+{
+  "name": "ahmethan-portfolio",
+  "version": "1.0.0",
+  "description": "Personal portfolio site with local editor",
+  "scripts": {
+    "edit": "node server.js",
+    "build": "node build.js"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}

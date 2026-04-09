@@ -278,7 +278,19 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t);display:
 
 <script>
 const { load, save, reset, uid, clone } = SiteConfig;
-let S = load(); // mutable editor state
+let S = load(); // initial state from localStorage
+
+// If running locally, prefer server config
+(async () => {
+  const isLocal = ['localhost','127.0.0.1'].includes(location.hostname);
+  if (isLocal) {
+    try {
+      const res = await fetch('/api/config');
+      if (res.ok) { S = await res.json(); }
+    } catch(_) { /* server not running, use localStorage */ }
+  }
+  populate();
+})();
 
 /* ── Helpers ── */
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -411,13 +423,33 @@ function populate(){
 }
 
 /* ── Save ── */
-g('btn-save').addEventListener('click',()=>{
-  S.hero.tag=g('h-tag').value;S.hero.firstName=g('h-fn').value;S.hero.lastName=g('h-ln').value;
-  S.hero.subtitle=g('h-sub').value;S.hero.description=g('h-desc').value;S.hero.badgeText=g('h-badge').value;
-  S.about.bio1=g('a-bio1').value;S.about.bio2=g('a-bio2').value;
-  S.contact.email=g('c-email').value;S.contact.phone=g('c-phone').value;S.contact.location=g('c-loc').value;
-  S.links.github=g('l-gh').value;S.links.linkedin=g('l-li').value;S.links.itchio=g('l-it').value;S.links.instagram=g('l-ig').value;
-  save(S)?toast('Changes saved!','ok'):toast('Failed to save.','err');
+const IS_LOCAL = ['localhost','127.0.0.1'].includes(location.hostname);
+
+g('btn-save').addEventListener('click', async () => {
+  S.hero.tag=g('h-tag').value; S.hero.firstName=g('h-fn').value; S.hero.lastName=g('h-ln').value;
+  S.hero.subtitle=g('h-sub').value; S.hero.description=g('h-desc').value; S.hero.badgeText=g('h-badge').value;
+  S.about.bio1=g('a-bio1').value; S.about.bio2=g('a-bio2').value;
+  S.contact.email=g('c-email').value; S.contact.phone=g('c-phone').value; S.contact.location=g('c-loc').value;
+  S.links.github=g('l-gh').value; S.links.linkedin=g('l-li').value; S.links.itchio=g('l-it').value; S.links.instagram=g('l-ig').value;
+
+  if (IS_LOCAL) {
+    // POST to local server — build.js updates HTML files on disk
+    try {
+      const res = await fetch('/api/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(S)
+      });
+      const data = await res.json();
+      if (data.ok) toast('HTML files updated! Push to GitHub to go live.', 'ok');
+      else         toast('Server error: ' + data.message, 'err');
+    } catch(e) {
+      toast('Server not running. Start with: node server.js', 'err');
+    }
+  } else {
+    // Fallback: localStorage only (GitHub Pages)
+    save(S) ? toast('Saved locally. Start server.js to update HTML files.', 'ok') : toast('Save failed.', 'err');
+  }
 });
 
 /* ── Reset ── */
@@ -436,7 +468,7 @@ document.querySelectorAll('.sb-item[data-panel]').forEach(b=>{
   });
 });
 
-populate();
+// populate() is called inside the async IIFE above after loading config
 </script>
 </body>
 </html>
