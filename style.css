@@ -1,7 +1,7 @@
 /* ===========================
    GLOBAL & RESET
    =========================== */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap');
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -11,22 +11,26 @@
 
 :root {
   --bg-primary:     #0a0a12;
+  --bg-primary-rgb: 10, 10, 18;
   --bg-secondary:   #10101e;
   --bg-glass:       rgba(255, 255, 255, 0.04);
   --border-glass:   rgba(255, 255, 255, 0.08);
   --accent-purple:  #9d4edd;
+  --accent-purple-rgb: 157, 78, 221;
   --accent-violet:  #7b2fbe;
   --accent-neon:    #c77dff;
   --accent-blue:    #48cae4;
+  --accent-blue-rgb: 72, 202, 228;
   --text-primary:   #f0eaff;
   --text-secondary: #a09ab8;
   --text-muted:     #5c5475;
-  --glow-purple:    0 0 20px rgba(157, 78, 221, 0.45);
+  --glow-purple:    0 0 20px rgba(var(--accent-purple-rgb), 0.45);
   --glow-neon:      0 0 30px rgba(199, 125, 255, 0.35);
   --radius-sm:      8px;
   --radius-md:      14px;
   --radius-lg:      22px;
   --transition:     0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-main:      'IBM Plex Mono', monospace;
 }
 
 html {
@@ -34,7 +38,7 @@ html {
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-main);
   background-color: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
@@ -49,8 +53,8 @@ body::before {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(157, 78, 221, 0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 90% 80%, rgba(72, 202, 228, 0.10) 0%, transparent 50%);
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(var(--accent-purple-rgb), 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 80%, rgba(var(--accent-blue-rgb), 0.10) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
@@ -62,7 +66,7 @@ header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(10, 10, 18, 0.85);
+  background: rgba(var(--bg-primary-rgb), 0.85);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border-bottom: 1px solid var(--border-glass);
@@ -100,7 +104,7 @@ header {
 }
 
 .logo-name {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-main);
   font-weight: 700;
   font-size: 1.15rem;
   color: var(--text-primary);
@@ -132,7 +136,7 @@ nav li {
 .nav-link {
   text-decoration: none;
   color: var(--text-secondary);
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-main);
   font-weight: 600;
   font-size: 0.88rem;
   letter-spacing: 0.06em;
@@ -228,7 +232,7 @@ main {
 }
 
 .hero-title {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-main);
   font-weight: 900;
   font-size: clamp(2.4rem, 5vw, 3.8rem);
   line-height: 1.1;
@@ -244,7 +248,7 @@ main {
 }
 
 .hero-subtitle {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-main);
   font-weight: 600;
   font-size: clamp(1.1rem, 2.5vw, 1.4rem);
   color: var(--accent-neon);
@@ -277,7 +281,7 @@ main {
   gap: 0.5rem;
   padding: 0.75rem 1.6rem;
   border-radius: var(--radius-sm);
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-main);
   font-weight: 700;
   font-size: 0.9rem;
   letter-spacing: 0.04em;
@@ -351,12 +355,12 @@ main {
   position: absolute;
   bottom: 8px;
   right: -12px;
-  background: rgba(16, 16, 30, 0.90);
+  background: rgba(var(--bg-primary-rgb), 0.90);
   border: 1px solid var(--border-glass);
   backdrop-filter: blur(10px);
   border-radius: var(--radius-sm);
   padding: 0.5rem 0.85rem;
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-main);
   font-size: 0.78rem;
   font-weight: 600;
   color: var(--accent-neon);
@@ -398,7 +402,7 @@ main {
 }
 
 .stat-num {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-main);
   font-size: 1.8rem;
   font-weight: 900;
   background: linear-gradient(135deg, var(--accent-purple), var(--accent-neon));
@@ -424,7 +428,7 @@ main {
 }
 
 .section-eyebrow {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-main);
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -434,7 +438,7 @@ main {
 }
 
 .section-title {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-main);
   font-weight: 900;
   font-size: clamp(2rem, 4vw, 3rem);
   line-height: 1.15;
@@ -550,7 +554,7 @@ main {
 }
 
 .contact-info h2 {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-main);
   font-weight: 900;
   font-size: clamp(1.8rem, 3.5vw, 2.6rem);
   line-height: 1.2;
@@ -581,7 +585,7 @@ main {
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-md);
   padding: 0.85rem 1.2rem;
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-main);
   font-weight: 600;
   font-size: 0.9rem;
   transition: all var(--transition);
@@ -627,7 +631,7 @@ main {
 }
 
 .contact-form-wrap h3 {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-main);
   font-weight: 700;
   font-size: 1.2rem;
   margin-bottom: 1.5rem;
@@ -655,7 +659,7 @@ main {
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-sm);
   padding: 0.75rem 1rem;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-main);
   font-size: 0.92rem;
   color: var(--text-primary);
   outline: none;
@@ -697,7 +701,7 @@ main {
   border-color: var(--border-glass);
   padding: 0.75rem 1.2rem;
   border-radius: var(--radius-sm);
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-main);
   font-weight: 600;
   font-size: 0.88rem;
   cursor: pointer;
@@ -716,7 +720,7 @@ main {
 footer {
   position: relative;
   z-index: 1;
-  background: rgba(10, 10, 18, 0.80);
+  background: rgba(var(--bg-primary-rgb), 0.80);
   border-top: 1px solid var(--border-glass);
   backdrop-filter: blur(12px);
   padding: 1.5rem 2rem;
@@ -842,7 +846,7 @@ footer {
     top: 70px;
     left: 0;
     right: 0;
-    background: rgba(10, 10, 18, 0.98);
+    background: rgba(var(--bg-primary-rgb), 0.98);
     border-bottom: 1px solid var(--border-glass);
     padding: 0.8rem 1.4rem 1.2rem;
     transform: translateY(-105%);
@@ -920,7 +924,7 @@ footer {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-main);
   font-size: 0.82rem;
   font-weight: 600;
   color: var(--text-secondary);
@@ -946,7 +950,7 @@ footer {
 }
 
 .about-block-title {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-main);
   font-size: 0.88rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -987,7 +991,7 @@ footer {
 }
 
 .exp-role {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-main);
   font-weight: 700;
   font-size: 0.95rem;
   color: var(--text-primary);

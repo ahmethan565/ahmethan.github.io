@@ -12,6 +12,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#0a0a12;--bg2:#10101e;--bg3:#16162a;
+  --bg-rgb: 10, 10, 18;
   --glass:rgba(255,255,255,.04);--border:rgba(255,255,255,.08);
   --p:#9d4edd;--neon:#c77dff;--blue:#48cae4;
   --t:#f0eaff;--t2:#a09ab8;--muted:#5c5475;
@@ -22,7 +23,7 @@ html,body{height:100%;overflow:hidden}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t);display:flex;flex-direction:column}
 
 /* TOPBAR */
-.topbar{height:var(--th);background:rgba(10,10,18,.92);border-bottom:1px solid var(--border);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:space-between;padding:0 1.4rem;flex-shrink:0;z-index:10}
+.topbar{height:var(--th);background:rgba(var(--bg-rgb),.92);border-bottom:1px solid var(--border);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:space-between;padding:0 1.4rem;flex-shrink:0;z-index:10}
 .tb-brand{display:flex;align-items:center;gap:.6rem}
 .tb-logo{width:30px;height:30px;border-radius:7px;object-fit:contain;box-shadow:0 0 10px rgba(157,78,221,.5)}
 .tb-name{font-family:'Outfit',sans-serif;font-weight:700;font-size:.95rem}
