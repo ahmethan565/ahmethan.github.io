@@ -1,16 +1,16 @@
 {
   "hero": {
-    "tag": "Game Developer & Designer",
+    "tag": "Game Programmer & Designer",
     "firstName": "Ahmethan",
     "lastName": "Bakır",
-    "subtitle": "Unity & Unreal Engine Developer",
+    "subtitle": "Unity & Unreal Engine Programmer",
     "description": "A game developer pursuing a B.Sc. in Digital Game Design at Bahcesehir University, with hands-on experience in multiplayer game development using Photon PUN. Proficient in C# and C++, focused on combat mechanics and puzzle systems.",
     "badgeText": "Ranke Studios",
     "heroImg": "images/hero-custom.jpg",
     "stats": [
       {
         "id": "s1",
-        "num": "1 Year",
+        "num": "1+ Year",
         "label": "Experience"
       },
       {
@@ -27,14 +27,14 @@
   },
   "about": {
     "bio1": "I am a game developer pursuing a Bachelor's degree in Digital Game Design at Bahcesehir University (Expected Graduation: July 2026), with hands-on experience in multiplayer game development using Photon PUN.",
-    "bio2": "Proficient in C#, C++, and algorithm design, with a focus on building engaging combat and puzzle mechanics. Through my role at BAU Code Nexus, I have gained leadership experience in technical community building and hackathon organisation.",
+    "bio2": "Proficient in C#, C++, and algorithm design, specialized in developing engaging combat and puzzle mechanics using scalable and maintainable Object-Oriented Programming (OOP) architectures. My experience at BAU Code Nexus also includes leadership in technical community building and hackathon organization.",
     "aboutImg": "images/about-custom.jpg",
     "education": [
       {
         "id": "e1",
         "role": "Digital Game Design — B.Sc.",
         "company": "Bahcesehir University",
-        "dateFrom": "2022",
+        "dateFrom": "2021",
         "dateTo": "Jul 2026",
         "bullets": []
       }
@@ -49,7 +49,8 @@
         "bullets": [
           "Developing a multiplayer Co-Op puzzle adventure game \"Lost In Your Eyes\" (Release: Jun 2026)",
           "Building Photon PUN-based multiplayer mechanics, combat and puzzle systems",
-          "GitHub repository management and technical oversight"
+          "GitHub repository management and technical oversight",
+          "İTÜ Seed Startup"
         ]
       },
       {
@@ -108,7 +109,7 @@
   },
   "links": {
     "github": "https://github.com/ahmethan565",
-    "linkedin": "https://www.linkedin.com/in/ahmethan-bakir/",
+    "linkedin": "https://www.linkedin.com/in/ahmethan-bak%C4%B1r/",
     "itchio": "https://4hmethan.itch.io",
     "instagram": "https://www.instagram.com/4hmethan/"
   }
