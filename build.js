@@ -175,26 +175,43 @@ function fetchItchGames(url) {
   return new Promise((resolve) => {
     if (!url || !url.includes('itch.io')) return resolve([]);
     console.log(`  🌐 Fetching itch.io games from ${url}...`);
-    https.get(url, (res) => {
+    
+    const options = {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5'
+      }
+    };
+    
+    https.get(url, options, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
+        if (res.statusCode !== 200) {
+          console.error(`  ⚠ Error: Itch.io returned status code ${res.statusCode}`);
+          return resolve([]);
+        }
         try {
           const games = [];
-          const matches = [...data.matchAll(/<div class="game_cell[^>]*>([\s\S]*?)<\/div>\s*<\/div>\s*<\/div>/g)];
-          for (const m of matches) {
-            const cell = m[1];
-            const titleM = cell.match(/<div class="game_title">[\s\S]*?<a[^>]*>([^<]+)<\/a>/);
-            const thumbM = cell.match(/data-lazy_src="([^"]+)"/); // itch uses data-lazy_src for thumbs
-            const linkM = cell.match(/<a[^>]*href="([^"]+)"[^>]*class="[^"]*thumb_link[^"]*"/);
-            const genreM = cell.match(/<div class="game_genre">([^<]+)<\/div>/);
+          const parts = data.split('data-game_id=');
+          for (let i = 1; i < parts.length; i++) {
+            const cell = parts[i];
+            // Since we split by data-game_id, we need to limit the cell text to just this game's div to avoid matching next game's thumb if this one lacks it.
+            // A game cell usually ends within 2000 chars.
+            const cellBlock = cell.substring(0, 2000);
             
-            if (titleM && linkM) {
+            const titleM = cellBlock.match(/<div class="game_title">[\s\S]*?<a[^>]*href="([^"]+)"[^>]*>([^<]+)<\/a>/);
+            const thumbM = cellBlock.match(/data-lazy_src="([^"]+)"/);
+            const fallbackThumbM = cellBlock.match(/data-background_image="([^"]+)"/);
+            const genreM = cellBlock.match(/<div class="game_genre">([^<]+)<\/div>/);
+            
+            if (titleM) {
               games.push({
                 id: 'itch_' + Math.random().toString(36).slice(2,9),
-                title: titleM[1].trim(),
-                thumb: thumbM ? thumbM[1] : '',
-                link: linkM[1],
+                title: titleM[2].trim(),
+                thumb: (thumbM ? thumbM[1] : (fallbackThumbM ? fallbackThumbM[1] : '')),
+                link: titleM[1],
                 genre: genreM ? genreM[1].trim() : ''
               });
             }
@@ -227,7 +244,9 @@ async function build(cfg) {
   // Fetch itch.io data
   if (cfg.links && cfg.links.itchio) {
     const games = await fetchItchGames(cfg.links.itchio);
-    cfg.portfolio.autoGames = games;
+    if (games && games.length > 0) {
+      cfg.portfolio.autoGames = games;
+    }
   }
 
   for (const [file, fn] of Object.entries(pages)) {

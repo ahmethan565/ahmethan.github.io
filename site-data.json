@@ -115,7 +115,58 @@
     "instagram": "https://www.instagram.com/4hmethan/"
   },
   "portfolio": {
-    "manualGames": [],
-    "autoGames": []
+    "manualGames": [
+      {
+        "id": "_zvlwfzv",
+        "title": "Lost In Your Eyes",
+        "genre": "Co-Op Puzzle",
+        "link": "https://store.steampowered.com/app/4038300/Lost_In_Your_Eyes/",
+        "thumb": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4038300/44f7a35818c966a875c7b17d322d3c12c6fe3b76/header.jpg?t=1772053608"
+      }
+    ],
+    "autoGames": [
+      {
+        "id": "itch_p13fw3o",
+        "title": "Unlock The Past",
+        "thumb": "https://img.itch.zone/aW1nLzIwMjUwMTEzLmpwZw==/315x250%23c/XSxARs.jpg",
+        "link": "https://4hmethan.itch.io/unlock-the-past",
+        "genre": "Puzzle"
+      },
+      {
+        "id": "itch_rpv12x3",
+        "title": "JOURNAL OF THE SCIENTIST",
+        "thumb": "https://img.itch.zone/aW1nLzE1ODUyMzY2LnBuZw==/315x250%23c/5k2KFR.png",
+        "link": "https://4hmethan.itch.io/journey-of-the-scientist",
+        "genre": "Action"
+      },
+      {
+        "id": "itch_mjayh0p",
+        "title": "MindQuake",
+        "thumb": "https://img.itch.zone/aW1nLzE1MDA1OTk5LnBuZw==/315x250%23c/jP9q2E.png",
+        "link": "https://onurtercan.itch.io/mindquake",
+        "genre": ""
+      },
+      {
+        "id": "itch_vn9a6sv",
+        "title": "Karıncayiyen - Cave Mash",
+        "thumb": "",
+        "link": "https://4hmethan.itch.io/cave-mash",
+        "genre": "Action"
+      },
+      {
+        "id": "itch_p3qlm07",
+        "title": "Longing",
+        "thumb": "https://img.itch.zone/aW1nLzEyMTAwODgwLmpwZw==/315x250%23c/W5XOro.jpg",
+        "link": "https://seymojet.itch.io/longing",
+        "genre": "Platformer"
+      },
+      {
+        "id": "itch_8rt5ii7",
+        "title": "Voyage",
+        "thumb": "https://img.itch.zone/aW1nLzEwNjI1ODg4LnBuZw==/315x250%23cb/nWZlyj.png",
+        "link": "https://seymojet.itch.io/voyage",
+        "genre": ""
+      }
+    ]
   }
 }

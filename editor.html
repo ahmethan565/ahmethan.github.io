@@ -420,7 +420,7 @@ function renderPortfolio(){
   if(!S.portfolio) S.portfolio={manualGames:[]};
   if(!S.portfolio.manualGames) S.portfolio.manualGames=[];
   g('portfolio-list').innerHTML=S.portfolio.manualGames.map((item,i)=>`
-    <div class="entry-card" id="port-${item.id}">
+    <div class="entry-card" id="card-${item.id}">
       <div class="entry-head" onclick="toggleCard('${item.id}')">
         <i class="fa-solid fa-chevron-right entry-chevron" id="chev-${item.id}"></i>
         <span class="entry-summary" id="sum-${item.id}">${esc(item.title||'New Project')}</span>
