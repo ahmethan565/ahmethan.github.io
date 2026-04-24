@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Ahmethan Bakır</title>
+    <meta name="description" content="Ahmethan Bakır's game development portfolio and itch.io projects.">
+    <link rel="icon" href="images/ab.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  </head>
+  <body>
+    <header>
+      <div class="header-inner">
+        <a href="index.html" class="logo-link" aria-label="Home">
+          <img class="logo-badge" src="images/ab.png" alt="Logo">
+          <span class="logo-name">Ahmethan Bakır</span>
+        </a>
+        <nav id="main-nav">
+          <ul>
+            <li><a href="index.html" class="nav-link" id="nav-home">Home</a></li>
+            <li><a href="about.html" class="nav-link" id="nav-about">About</a></li>
+            <li><a href="portfolio.html" class="nav-link active" id="nav-portfolio">Portfolio</a></li>
+            <li><a href="contact.html" class="nav-link" id="nav-contact">Contact</a></li>
+          </ul>
+        </nav>
+        <button class="hamburger" id="hamburger" aria-label="Toggle Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="about-section">
+        <p class="section-eyebrow">My Projects</p>
+        <h1 class="section-title">Portfolio</h1>
+
+        <div class="portfolio-grid-wrap">
+          <div class="portfolio-grid" id="portfolio-grid">
+            <!-- SC:portfolio-grid --><p class="text-center" style="color:var(--t2);width:100%;grid-column:1/-1;">No projects found yet.</p><!-- /SC:portfolio-grid -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <span class="footer-copy">&copy; 2025 Ahmethan Bakır</span>
+        <div class="footer-socials">
+          <a href="https://4hmethan.itch.io" target="_blank" rel="noopener" class="footer-social-btn" aria-label="Itch.io" id="footer-itchio"><i class="fa-brands fa-itch-io"></i></a>
+          <a href="https://github.com/ahmethan565" target="_blank" rel="noopener" class="footer-social-btn" aria-label="GitHub" id="footer-github"><i class="fa-brands fa-github"></i></a>
+          <a href="https://www.linkedin.com/in/ahmethan-bak%C4%B1r/" target="_blank" rel="noopener" class="footer-social-btn" aria-label="LinkedIn" id="footer-linkedin"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="https://www.instagram.com/4hmethan/" target="_blank" rel="noopener" class="footer-social-btn" aria-label="Instagram" id="footer-instagram"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="site-config.js"></script>
+    <script>
+      const hamburger = document.getElementById('hamburger');
+      const nav       = document.getElementById('main-nav');
+      const backdrop  = document.createElement('div');
+      backdrop.className = 'nav-backdrop';
+      document.body.appendChild(backdrop);
+      function openMenu()  { nav.classList.add('open'); hamburger.classList.add('open'); hamburger.setAttribute('aria-expanded','true'); backdrop.style.display='block'; requestAnimationFrame(()=>backdrop.classList.add('show')); }
+      function closeMenu() { nav.classList.remove('open'); hamburger.classList.remove('open'); hamburger.setAttribute('aria-expanded','false'); backdrop.classList.remove('show'); setTimeout(()=>{backdrop.style.display='none';},300); }
+      hamburger.addEventListener('click', () => nav.classList.contains('open') ? closeMenu() : openMenu());
+      nav.querySelectorAll('.nav-link').forEach(l => l.addEventListener('click', closeMenu));
+      backdrop.addEventListener('click', closeMenu);
+    </script>
+  </body>
+</html>

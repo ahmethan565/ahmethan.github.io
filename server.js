@@ -53,7 +53,7 @@ const server = http.createServer((req, res) => {
   if (req.method === 'POST' && url === '/api/save') {
     let body = '';
     req.on('data', chunk => { body += chunk; });
-    req.on('end', () => {
+    req.on('end', async () => {
       try {
         const cfg = JSON.parse(body);
         console.log('\n📥 Save received — processing...');
@@ -82,7 +82,7 @@ const server = http.createServer((req, res) => {
         }
 
         // ── Build HTML files ────────────────────────────────────────────────
-        build(cfg);
+        await build(cfg);
         console.log('✅ Build complete\n');
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ ok: true, message: 'HTML files updated!' }));

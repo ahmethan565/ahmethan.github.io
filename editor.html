@@ -140,6 +140,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t);display:
     <button class="sb-item active" data-panel="home"><i class="fa-solid fa-house"></i> Home</button>
     <button class="sb-item" data-panel="about"><i class="fa-solid fa-user"></i> About</button>
     <button class="sb-item" data-panel="contact"><i class="fa-solid fa-envelope"></i> Contact</button>
+    <button class="sb-item" data-panel="portfolio"><i class="fa-solid fa-gamepad"></i> Portfolio</button>
     <div class="sb-div"></div>
     <div class="sb-label">Settings</div>
     <button class="sb-item" data-panel="links"><i class="fa-solid fa-link"></i> Links & URLs</button>
@@ -256,6 +257,18 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t);display:
         <div class="fg"><label class="fl">Email</label><input class="fi" id="c-email" type="email"></div>
         <div class="fg"><label class="fl">Phone</label><input class="fi" id="c-phone" type="tel"></div>
         <div class="fg"><label class="fl">Location</label><input class="fi" id="c-loc" type="text"></div>
+      </div>
+    </div>
+
+    <!-- PORTFOLIO -->
+    <div class="panel" id="panel-portfolio">
+      <p class="panel-title">Portfolio Page</p>
+      <p class="panel-desc">Manage manual portfolio projects. Itch.io projects are fetched automatically during build.</p>
+      
+      <div class="fsec">
+        <div class="fsec-title"><i class="fa-solid fa-folder-plus"></i> Manual Projects</div>
+        <div id="portfolio-list"></div>
+        <button class="btn-add" onclick="addPortfolio()"><i class="fa-solid fa-plus"></i> Add Project</button>
       </div>
     </div>
 
@@ -402,6 +415,31 @@ function renderExp(){
 function addEdu(){S.about.education.push({id:uid(),role:'',company:'',dateFrom:'',dateTo:'',bullets:[]});renderEdu();}
 function addExp(){S.about.experience.push({id:uid(),role:'',company:'',dateFrom:'',dateTo:'',bullets:[]});renderExp();}
 
+/* ── Portfolio ── */
+function renderPortfolio(){
+  if(!S.portfolio) S.portfolio={manualGames:[]};
+  if(!S.portfolio.manualGames) S.portfolio.manualGames=[];
+  g('portfolio-list').innerHTML=S.portfolio.manualGames.map((item,i)=>`
+    <div class="entry-card" id="port-${item.id}">
+      <div class="entry-head" onclick="toggleCard('${item.id}')">
+        <i class="fa-solid fa-chevron-right entry-chevron" id="chev-${item.id}"></i>
+        <span class="entry-summary" id="sum-${item.id}">${esc(item.title||'New Project')}</span>
+        <button class="ic-del" onclick="removePortfolio(${i},event)"><i class="fa-solid fa-trash"></i></button>
+      </div>
+      <div class="entry-body">
+        <div class="form-row">
+          <div class="fg"><label class="fl">Title</label><input class="fi" value="${escA(item.title)}" oninput="updatePortfolio(${i},'title',this.value)"></div>
+          <div class="fg"><label class="fl">Genre</label><input class="fi" value="${escA(item.genre)}" oninput="updatePortfolio(${i},'genre',this.value)"></div>
+        </div>
+        <div class="fg"><label class="fl">Link (URL)</label><input class="fi" value="${escA(item.link)}" oninput="S.portfolio.manualGames[${i}].link=this.value"></div>
+        <div class="fg"><label class="fl">Thumbnail URL</label><input class="fi" value="${escA(item.thumb)}" oninput="S.portfolio.manualGames[${i}].thumb=this.value" placeholder="https://... or images/... "></div>
+      </div>
+    </div>`).join('');
+}
+function updatePortfolio(i,field,val){S.portfolio.manualGames[i][field]=val;g('sum-'+S.portfolio.manualGames[i].id).textContent=(S.portfolio.manualGames[i].title||'New Project');}
+function removePortfolio(i,e){e.stopPropagation();S.portfolio.manualGames.splice(i,1);renderPortfolio();}
+function addPortfolio(){S.portfolio.manualGames.push({id:uid(),title:'',genre:'',link:'',thumb:''});renderPortfolio();}
+
 /* ── Populate all fields ── */
 function populate(){
   // Hero
@@ -416,7 +454,7 @@ function populate(){
   // Links
   setV('l-gh',S.links.github);setV('l-li',S.links.linkedin);setV('l-it',S.links.itchio);setV('l-ig',S.links.instagram);
   // Dynamic
-  renderStats();renderEdu();renderExp();
+  renderStats();renderEdu();renderExp();renderPortfolio();
   renderTags(S.about.skills,'skill-tags','removeSkill');
   renderTags(S.about.languages,'lang-tags','removeLang');
   // Init char counters

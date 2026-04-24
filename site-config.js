@@ -37,7 +37,8 @@
       languages: ['Turkish — Native', 'English — B2']
     },
     contact: { email: '1@ahmethan.com.tr', phone: '+90 546 620 04 55', location: 'Üsküdar, Istanbul' },
-    links: { github: 'https://github.com/ahmethan565', linkedin: 'https://www.linkedin.com/in/ahmethan-bakir/', itchio: 'https://4ahmethan.itch.io', instagram: 'https://www.instagram.com/4hmethan/' }
+    links: { github: 'https://github.com/ahmethan565', linkedin: 'https://www.linkedin.com/in/ahmethan-bakir/', itchio: 'https://4hmethan.itch.io', instagram: 'https://www.instagram.com/4hmethan/' },
+    portfolio: { manualGames: [] }
   };
 
   function uid() { return '_' + Math.random().toString(36).slice(2, 9); }

@@ -4,9 +4,10 @@
  * Also called by server.js when editor saves.
  */
 'use strict';
-const fs   = require('fs');
-const path = require('path');
-const ROOT = __dirname;
+const fs    = require('fs');
+const path  = require('path');
+const https = require('https');
+const ROOT  = __dirname;
 const DATA = path.join(ROOT, 'site-data.json');
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -138,13 +139,96 @@ function buildContact(html, cfg) {
   return html;
 }
 
+function buildPortfolio(html, cfg) {
+  // Footer hrefs
+  for (const [k, v] of Object.entries(cfg.links)) {
+    html = href(html, `footer-${k}`, v);
+  }
+
+  const manual = cfg.portfolio?.manualGames || [];
+  const auto = cfg.portfolio?.autoGames || [];
+  const allGames = [...manual, ...auto];
+
+  if (allGames.length === 0) {
+    return sc(html, 'portfolio-grid', '<p class="text-center" style="color:var(--t2);width:100%;grid-column:1/-1;">No projects found yet.</p>');
+  }
+
+  const gridHTML = allGames.map(g => {
+    const thumb = g.thumb || 'images/ab.png';
+    return `
+      <a href="${esc(g.link)}" target="_blank" rel="noopener" class="port-card">
+        <div class="port-thumb">
+          <img src="${esc(thumb)}" alt="${esc(g.title)}" loading="lazy">
+        </div>
+        <div class="port-info">
+          <h3 class="port-title">${esc(g.title)}</h3>
+          ${g.genre ? `<span class="port-genre">${esc(g.genre)}</span>` : ''}
+        </div>
+      </a>`;
+  }).join('');
+
+  return sc(html, 'portfolio-grid', gridHTML);
+}
+
+// ── Itch.io Scraper ────────────────────────────────────────────────────────────
+function fetchItchGames(url) {
+  return new Promise((resolve) => {
+    if (!url || !url.includes('itch.io')) return resolve([]);
+    console.log(`  🌐 Fetching itch.io games from ${url}...`);
+    https.get(url, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        try {
+          const games = [];
+          const matches = [...data.matchAll(/<div class="game_cell[^>]*>([\s\S]*?)<\/div>\s*<\/div>\s*<\/div>/g)];
+          for (const m of matches) {
+            const cell = m[1];
+            const titleM = cell.match(/<div class="game_title">[\s\S]*?<a[^>]*>([^<]+)<\/a>/);
+            const thumbM = cell.match(/data-lazy_src="([^"]+)"/); // itch uses data-lazy_src for thumbs
+            const linkM = cell.match(/<a[^>]*href="([^"]+)"[^>]*class="[^"]*thumb_link[^"]*"/);
+            const genreM = cell.match(/<div class="game_genre">([^<]+)<\/div>/);
+            
+            if (titleM && linkM) {
+              games.push({
+                id: 'itch_' + Math.random().toString(36).slice(2,9),
+                title: titleM[1].trim(),
+                thumb: thumbM ? thumbM[1] : '',
+                link: linkM[1],
+                genre: genreM ? genreM[1].trim() : ''
+              });
+            }
+          }
+          console.log(`  ✓ Found ${games.length} itch.io games`);
+          resolve(games);
+        } catch (e) {
+          console.error('  ⚠ Error parsing itch.io data', e);
+          resolve([]);
+        }
+      });
+    }).on('error', (e) => {
+      console.error('  ⚠ Error fetching itch.io data', e);
+      resolve([]);
+    });
+  });
+}
+
 // ── Main build ─────────────────────────────────────────────────────────────────
-function build(cfg) {
+async function build(cfg) {
   const pages = {
-    'index.html':   buildIndex,
-    'about.html':   buildAbout,
-    'contact.html': buildContact,
+    'index.html':     buildIndex,
+    'about.html':     buildAbout,
+    'contact.html':   buildContact,
+    'portfolio.html': buildPortfolio
   };
+
+  if (!cfg.portfolio) cfg.portfolio = { manualGames: [], autoGames: [] };
+  
+  // Fetch itch.io data
+  if (cfg.links && cfg.links.itchio) {
+    const games = await fetchItchGames(cfg.links.itchio);
+    cfg.portfolio.autoGames = games;
+  }
 
   for (const [file, fn] of Object.entries(pages)) {
     const fp = path.join(ROOT, file);
@@ -161,14 +245,16 @@ function build(cfg) {
 
 // ── CLI ────────────────────────────────────────────────────────────────────────
 if (require.main === module) {
-  if (!fs.existsSync(DATA)) {
-    console.error('❌  site-data.json not found. Open editor.html first to save initial config.');
-    process.exit(1);
-  }
-  const cfg = JSON.parse(fs.readFileSync(DATA, 'utf8'));
-  console.log('🔨 Building site...');
-  build(cfg);
-  console.log('✅ Done!');
+  (async () => {
+    if (!fs.existsSync(DATA)) {
+      console.error('❌  site-data.json not found. Open editor.html first to save initial config.');
+      process.exit(1);
+    }
+    const cfg = JSON.parse(fs.readFileSync(DATA, 'utf8'));
+    console.log('🔨 Building site...');
+    await build(cfg);
+    console.log('✅ Done!');
+  })();
 }
 
 module.exports = { build };

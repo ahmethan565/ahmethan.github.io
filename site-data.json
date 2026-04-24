@@ -113,5 +113,9 @@
     "linkedin": "https://www.linkedin.com/in/ahmethan-bak%C4%B1r/",
     "itchio": "https://4hmethan.itch.io",
     "instagram": "https://www.instagram.com/4hmethan/"
+  },
+  "portfolio": {
+    "manualGames": [],
+    "autoGames": []
   }
 }
