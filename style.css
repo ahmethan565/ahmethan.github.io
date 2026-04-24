@@ -87,6 +87,26 @@ header {
   display: flex;
   align-items: center;
   gap: 0.6rem;
+  position: relative;
+}
+
+.logo-link::before {
+  content: '';
+  position: absolute;
+  left: 20px; /* center of 40x40 logo */
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle at center, rgba(157, 78, 221, 0.5) 0%, transparent 70%);
+  z-index: -1;
+  pointer-events: none;
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.logo-link:hover::before {
+  opacity: 0.8;
+  transform: translate(-50%, -50%) scale(1.2);
 }
 
 .logo-badge {
@@ -94,13 +114,14 @@ header {
   height: 40px;
   border-radius: 10px;
   object-fit: contain;
-  box-shadow: var(--glow-purple);
-  transition: transform var(--transition), box-shadow var(--transition);
+  transition: transform var(--transition);
+  /* Optional: Adds a slight glow to the letters themselves */
+  filter: drop-shadow(0 0 8px rgba(157, 78, 221, 0.4));
 }
 
 .logo-link:hover .logo-badge {
   transform: scale(1.08) rotate(-3deg);
-  box-shadow: var(--glow-neon);
+  filter: drop-shadow(0 0 15px rgba(199, 125, 255, 0.7));
 }
 
 .logo-name {
